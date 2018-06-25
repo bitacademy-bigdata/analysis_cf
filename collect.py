@@ -41,6 +41,10 @@ def crawling_pelicana():
 
     table['sido'] = table.sido.apply(lambda v: sido_dict.get(v, v))
     table['gungu'] = table.gungu.apply(lambda v: gungu_dict.get(v, v))
+    table = table.drop_duplicates(subset='name', keep='first').\
+        reset_index(drop=True).\
+        reset_index().\
+        set_index('index')
 
     table.to_csv('{0}/pelicana_table.csv'.format(RESULT_DIRECTORY), encoding='utf-8', mode='w', index=True)
 
@@ -65,6 +69,11 @@ def store_nene(data):
 
     table['sido'] = table.sido.apply(lambda v: sido_dict.get(v, v))
     table['gungu'] = table.gungu.apply(lambda v: gungu_dict.get(v, v))
+
+    table = table.drop_duplicates(subset='name', keep='first').\
+        reset_index(drop=True).\
+        reset_index().\
+        set_index('index')
 
     table.to_csv('{0}/nene_table.csv'.format(RESULT_DIRECTORY), encoding='utf-8', mode='w', index=True)
 
@@ -107,6 +116,11 @@ def crawling_kyochon():
 
     table['sido'] = table.sido.apply(lambda v: sido_dict.get(v, v))
     table['gungu'] = table.gungu.apply(lambda v: gungu_dict.get(v, v))
+
+    table = table.drop_duplicates(subset='name', keep='first').\
+        reset_index(drop=True).\
+        reset_index().\
+        set_index('index')
 
     table.to_csv('{0}/kyochon_table.csv'.format(RESULT_DIRECTORY), encoding='utf-8', mode='w', index=True)
 
@@ -153,24 +167,27 @@ def crawling_goobne():
     table['sido'] = table.sido.apply(lambda v: sido_dict.get(v, v))
     table['gungu'] = table.gungu.apply(lambda v: gungu_dict.get(v, v))
 
+    table = table.drop_duplicates(subset='name', keep='first').\
+        reset_index(drop=True).\
+        reset_index().\
+        set_index('index')
+
     table.to_csv('{0}/goobne_table.csv'.format(RESULT_DIRECTORY), encoding='utf-8', mode='w', index=True)
 
 
 if __name__ == '__main__':
     # pelicana
-    # crawling_pelicana()
+    crawling_pelicana()
 
     # nene
-    '''
     cw.crawling(
         url='http://nenechicken.com/subpage/where_list.asp?target_step2=%s&proc_type=step1&target_step1=%s'
             % (urllib.parse.quote("전체"), urllib.parse.quote("전체")),
         proc=proc_nene,
         store=store_nene)
-    '''
 
     # kyochon
     crawling_kyochon()
 
     # goobne
-    # crawling_goobne()
+    crawling_goobne()
