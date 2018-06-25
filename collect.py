@@ -111,7 +111,6 @@ def crawling_kyochon():
     table.to_csv('{0}/kyochon_table.csv'.format(RESULT_DIRECTORY), encoding='utf-8', mode='w', index=True)
 
 
-
 def crawling_goobne():
     url = 'http://www.goobne.co.kr/store/search_store.jsp'
 
