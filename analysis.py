@@ -126,16 +126,30 @@ data_draw_korea = pd.read_csv('data_draw_korea.csv', index_col=0, encoding='utf-
 data_draw_korea.index = data_draw_korea.apply(lambda r: r['광역시도'] + ' ' + r['행정구역'], axis=1)
 
 
-chicken_merge = pd.merge(
-    data_draw_korea,
-    chicken_table,
-    how='outer',
-    left_index=True,
-    right_index=True)
+chicken_merge = pd.merge(data_draw_korea, chicken_table, how='outer', left_index=True, right_index=True)
+chicken_merge = chicken_merge[~np.isnan(chicken_merge['면적'])]
 
-print(chicken_merge)
+chicken_merge['total'] = chicken_table.sum(axis=1)
+chicken_merge = chicken_merge[~np.isnan(chicken_merge['total'])]
 
-# 페리카나 매장 분포
-# showmap(chicken_merge, 'nene', '페리카나 매장 분포', 'Blues')
+# 4개 치킨 프랜차이즈 전국 매장 분포
+# showmap(chicken_merge, 'total', '4개 치킨 프랜차이즈 전국 매장 분포', 'RdPu')
+
+# 인구 만명당 치킨집 수
+chicken_merge['total10k'] = chicken_merge['total'] / chicken_merge['인구수'] * 10000
+# showmap(chicken_merge, 'total10k', '인구 만명당 치킨집 수', 'Purples')
+
+# 면적당 치킨집 수
+chicken_merge['area'] = chicken_merge['total'] / chicken_merge['면적']
+showmap(chicken_merge, 'area', '면적당 치킨집 수', 'Reds')
+
+
+# 전국 각 프란차이즈별 매장 분포
+# showmap(chicken_merge, 'pelicana', '페리카나 매장 분포', 'Blues')
+# showmap(chicken_merge, 'nene', '네네 매장 분포', 'Greys')
+# showmap(chicken_merge, 'goobne', '굽네 매장 분포', 'Reds')
+# showmap(chicken_merge, 'kyochon', '교촌 매장 분포', 'Oranges')
+
+
 
 
